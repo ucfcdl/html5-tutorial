@@ -20,7 +20,7 @@
 <body>
 <div id="header">
 	<div class="container">
-		<h1>Introduction to HTML5</h1>
+		<h1>Introduction to HTML5 &lt;canvas&gt;</h1>
 		<h2>How to Build a Drivable Car in HTML5 and JavaScript</h2>
 		<img id="logo" src="http://techrangers.cdl.ucf.edu/files/2013/03/robot.png" alt="techranger robot logo"/>
 	</div>
@@ -39,10 +39,10 @@
 	</ul>
 	<h2>Introduction to the Canvas</h2>
 	<p>
-		The release of HTML5 brought a myriad of changes to the web development community, but the canvas element, combined with some clever JavaScript is what allows us to create complex and dynamic graphical content for the web. We will be focusing on it specifically to build a basic control system for a car in a top down browser based game.
+		The release of HTML5 brought a myriad of changes to the web development community, but the canvas element, combined with some clever JavaScript, is what allows us to create complex and dynamic graphical content for the web. We will be focusing on it specifically to build a basic control system for a car in a top down browser based game.
 	</p> 
 	<p>
-		So how does it work? Essentially the canvas tag is the stage for all of your graphical content located in the markup. A series of methods in Javascript were developed to manipulate the canvas. The canvas element is the only bit of markup needed for this project.
+		So how does it work? Essentially, the canvas tag is the stage for all of your graphical content located in the markup. A series of methods in JavaScript were developed to manipulate the canvas. The canvas element is the only bit of markup needed for this project.
 	</p>
 	<pre class="brush: xml; first-line: 1;">
 	&lt;!DOCTYPE html&gt;
@@ -66,7 +66,7 @@
 	</pre>
 	<h3>Shapes!</h3>
 	<p>
-		Next we will look at how to actually draw some simple shapes and import images to the canvas using JavaScript! First thing we need to do is grab the canvas from the HTML document and then grab the "context" of the element. The context controls how the canvas element displays graphics. Contexts can be 2D or 3D, but we will be focusing on 2D for our top down game controls. Now let's draw some basic shapes!
+		Next, we will look at how to actually draw some simple shapes and import images to the canvas using JavaScript! First thing we need to do is grab the canvas from the HTML document and then grab the "context" of the element. The context controls how the canvas element displays graphics. Contexts can be 2D or 3D, but we will be focusing on 2D for our top down game controls. Now let's draw some basic shapes!
 	</p>
 	<pre class="brush: js; first-line: 1;">
 	window.onload = function()
@@ -101,7 +101,7 @@
 		When the car is drawn it will be drawn at the top most left corner of the image file. This is just how drawImage() handles the image creation process. 
 	</p>
 	<p>
-		So your code should now look like this. You can grab a copy of the car image here
+		So your code should now look like this. You can <a href="img/tutrobot.png" target="_blank">grab a copy of the car image here</a>.
 	</p>
 	<pre class="brush: js; first-line: 1;">
 	window.onload = function()
@@ -365,7 +365,7 @@
 </div>
 <div id="footer">
 	<p>
-		Techrangers Robot" and Content  Copyright &copy; 2013, <a href="http://techrangers.cdl.ucf.edu">Techrangers</a> <sup>&reg;</sup> <a href="http://cdl.ucf.edu/">Center for Distributed Learning</a>
+		"Techrangers Robot" and Content Copyright &copy; 2013, <a href="http://techrangers.cdl.ucf.edu">Techrangers</a><sup>&reg;</sup> | <a href="http://cdl.ucf.edu/">Center for Distributed Learning</a> | <a href="http://www.ucf.edu/">University of Central Florida</a>
 	</p>
 </div>
 </body>
