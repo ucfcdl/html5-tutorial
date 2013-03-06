@@ -1,0 +1,393 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>How to Build a Drivable Car in HTML5 and JavaScript</title>
+	<link rel="stylesheet" type="text/css" href="css/reset.css"/>
+	<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="css/main.css"/>
+	
+
+	<script type="text/javascript" src="scripts/shCore.js"></script>
+	<script type="text/javascript" src="scripts/shBrushJScript.js"></script>
+	<script type="text/javascript" src="scripts/shBrushXml.js"></script>
+	<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+	<link href="styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.defaults["html-script"] = true;
+    	SyntaxHighlighter.all();
+	</script>
+</head>
+<body>
+<div id="header">
+	<div class="container">
+		<h1>Introduction to HTML5</h1>
+		<h2>How to Build a Drivable Car in HTML5 and JavaScript</h2>
+		<img id="logo" src="http://techrangers.cdl.ucf.edu/files/2013/03/robot.png" alt="techranger robot logo"/>
+	</div>
+</div>
+<div id="container">
+	<h3 class="first">Prerequisites</h3>
+	<ul>
+		<li><a href="http://www.w3schools.com/js/default.asp">Intermediate Level of JavaScript Experience</a></li>
+		<li><a href="http://www.w3schools.com/html/default.asp">Intermediate Level of HTML Experience</a></li>
+		<li><a href="http://en.wikipedia.org/wiki/Trigonometric_functions">Understanding of Sine, Cosine, and Tangent</a></li>
+	</ul>
+	<h3>Resources</h3>
+	<ul>
+		<li><a href="img/tutrobot.png" target="_blank">Image for use in project</a></li>
+		<li><a href="https://github.com/ucfcdl/html5-tutorial">Github Repo</a></li>
+	</ul>
+	<h2>Introduction to the Canvas</h2>
+	<p>
+		The release of HTML5 brought a myriad of changes to the web development community, but the canvas element, combined with some clever JavaScript is what allows us to create complex and dynamic graphical content for the web. We will be focusing on it specifically to build a basic control system for a car in a top down browser based game.
+	</p> 
+	<p>
+		So how does it work? Essentially the canvas tag is the stage for all of your graphical content located in the markup. A series of methods in Javascript were developed to manipulate the canvas. The canvas element is the only bit of markup needed for this project.
+	</p>
+	<pre class="brush: xml; first-line: 1;">
+	&lt;!DOCTYPE html&gt;
+	&lt;html&gt;
+	   	&lt;head&gt;
+	        &lt;title&gt;hello world&lt;/title&gt;
+	    	&lt;meta charset="UTF-8"&gt;
+	        &lt;script type="text/javascript" src="main.js"&gt;&lt;/script&gt;
+	        &lt;style type="text/css"&gt;
+	            #canvas{
+	            	border: 2px solid #333;
+	            }
+	        &lt;/style&gt;
+	    &lt;/head&gt;
+	    &lt;body&gt;
+	        &lt;canvas id="canvas" width"800" height="800"&gt;
+	        	&lt;!-- fun things happen here --&gt;
+	        &lt;/canvas&gt;
+	    &lt;/body&gt;
+	&lt;/html&gt;
+	</pre>
+	<h3>Shapes!</h3>
+	<p>
+		Next we will look at how to actually draw some simple shapes and import images to the canvas using JavaScript! First thing we need to do is grab the canvas from the HTML document and then grab the "context" of the element. The context controls how the canvas element displays graphics. Contexts can be 2D or 3D, but we will be focusing on 2D for our top down game controls. Now let's draw some basic shapes!
+	</p>
+	<pre class="brush: js; first-line: 1;">
+	window.onload = function()
+	{
+	    var canvas = document.getElementById("canvas");
+	    var context = canvas.getContext("2d");
+	    	
+	    context.fillStyle = "rgb(100, 200, 120)";
+	    context.fillRect(10, 10, 55, 50);
+	}
+	</pre>
+	<p>
+		So let's go over what's actually happening here step by step.
+	</p>
+	<ol> 
+		<li>Set window.onload to your draw function.</li>
+		<li>You grab the canvas tag out of the DOM.</li>
+		<li>Get the 2D context of the canvas tag so we may build shapes and graphics.</li>
+		<li>We set the fillStyle property of the context to a certain color. This allows any shapes we create to use this property in their creation.</li>
+		<li>We then use the method fillRect() of the canvas tag to build a rectangle with x and y coordinates. This translates into fillRect(x1, y1, x2, y2). Since we already set the context fillStyle to a color, the rectangle uses that to fill in itself.</li>
+	</ol>
+	<h2>Images!</h2>
+	<p>
+		The process of importing an image is a bit different because we are not actually drawing it using JavaScript.
+	</p>
+	<ol>
+		<li>We first make a new image object</li>
+		<li>Set its src property to the filename of your image</li>
+		<li>Pass the image object into the context with x and y coordinates</li>
+	</ol>
+	<p>
+		When the car is drawn it will be drawn at the top most left corner of the image file. This is just how drawImage() handles the image creation process. 
+	</p>
+	<p>
+		So your code should now look like this. You can grab a copy of the car image here
+	</p>
+	<pre class="brush: js; first-line: 1;">
+	window.onload = function()
+	{
+	    var canvas = document.getElementById("canvas");
+	    var context = canvas.getContext("2d");
+
+	    var x = 0;
+	    var y = 0;
+
+	    var car = new Image();
+	    car.src="myimage.jpg";
+	    context.drawImage(car, x, y);
+	}
+	</pre>
+	<h3>Making our car move</h3>
+	<p>
+		Canvas handles movement much like traditional animation does in cartoons. Think of the canvas tag like a flipbook. Each time you draw something using the context of canvas, you are drawing in a single page in a flipbook. So how do we program a flipbook?
+	</p>
+	<ol>
+		<li>Draw a single page  (Initialize your image and import it into the context)</li>
+		<li>Start a new page</li>
+		<li>Repeat steps 1 and 2 indefinitely </li>
+	</ol>
+	<p>
+		So how do we start a new page? We use this.
+	</p>
+	<pre class="brush: js; first-line: 1;"> 
+	context.clearRect(0, 0, 800, 800);
+	</pre>
+	<p>
+		This will clear anything drawn in that particular section of the canvas. We will use this to simulate starting on a new blank page.
+	</p>
+	<p>
+		For step three, we need to indefinitely loop through our statements while making changes with each iteration. However, like a flipbook, we need to add a factor of time to the equation. If we just loop through, the canvas will only display our final result, but we want each change to display incrementally with a small delay. Think about when you flip through a flipbook. Each new page is revealed a fraction of a second apart from each other. We can simulate this in JavaScript with this the setInterval method. Your code should now look like this.
+	</p>
+	<p>
+		We are taking this moment to split up the drawing.
+	</p>
+	<pre class="brush: js; first-line: 1;">
+	window.onload = function()
+	{
+		x = 0;
+		y = 0;
+
+		canvas = document.getElementById("canvas");
+		context = canvas.getContext("2d");
+
+		var move = setInterval(function()
+		{
+			draw();
+		}, 30);
+	};
+	 
+	function draw()
+	{
+		context.clearRect(0, 0, 800, 800);
+		var car = new Image();
+		car.src="myimage.png";
+		context.drawImage(car, x, y);
+
+		y++;
+	}
+	</pre>
+	<p>
+		The reason we set setInterval to a variable is so we may stop the animation from occurring. We simply do the following if we want things to stop.
+	</p>
+	<pre class="brush: js; first-line: 1;">
+	clearInterval(move);
+	</pre>
+	<h3>Controlling the Movement</h3>
+	<h4>SOH CAH TOA</h4>
+	<p>
+		If you have had a high school math course, you may recognize these letters. They represent SINE, COSINE, and TANGENT. They are used to in calculating the angles and lengths of triangles. How will we use this? Well consider the movement of our car as described in the diagram below.
+	</p>
+	<p>
+		Because the car is moving at an angle, the rates at which x and y increment are different. We calculate these differences using the SINE and COSINE functions in JavaScript. We need to multiply our angle by Math.PI/180 to convert it to radians, another way to represent angles in math. We need to do this because the rotate method we will be using soon requires an angle in the form of radians. If we don't have the angle formats match, neither will the car's new position and new angle. 
+	</p>
+	<pre class="brush: js; first-line: 1;">
+	window.onload = function()
+	{
+		x = 0;
+		y = 0;
+		speed = 5;
+		angle = 30;
+		
+		canvas = document.getElementById("canvas");
+		context = canvas.getContext("2d");
+
+		car = new Image();
+		car.src="myimage.png";
+
+		var move = setInterval(function()
+		{
+			draw();
+		}, 30);
+	};
+
+	function draw()
+	{
+		context.clearRect(0, 0, 800, 800);
+		
+		context.drawImage(car, x, y);
+
+		x += speed * Math.cos(Math.PI/180 * angle);
+		y += speed * Math.sin(Math.PI/180 * angle);
+	}
+	</pre>
+	<p>
+		Now we need to make our car rotate. luckily for us, HTML5 includes a rotate method! 
+		The rotate method, like our drawImage method, does not rotate the object around its center, but at the left corner of the object. This means we need to make a very small adjustment to our movement statements as well as implementing the rotate method. 
+	</p>
+	<ol>
+			<li>Save the current state of our context and then center it to the object to rotate.</li>
+			<li>Rotate the context by the angle in radians.</li>
+			<li>Draw the image, but subtract half of the width and half of the height from the coordinates. This makes up for the fact that we are rotating around the corner of our object.</li>
+			<li>Restore the previous context state so that it is not centered around our object.</li> 
+			<li>The translate method will now take the place of drawing the image at x and y.</li>
+	</ol>
+	<pre class="brush: js; first-line: 1;">
+	window.onload = function()
+	{
+		x = 0;
+		y = 0;
+		speed = 5;
+		angle =25;
+		
+		canvas = document.getElementById("canvas");
+		context = canvas.getContext("2d");
+		car = new Image();
+	    	car.src="myimage.png";
+
+		var move = setInterval(function()
+		{
+			draw();
+		}, 30);
+	};
+
+	function draw()
+	{
+		context = canvas.getContext("2d");
+		context.clearRect(0, 0, 800, 800);
+
+		x += speed * Math.cos(Math.PI/180 * angle);
+		y += speed * Math.sin(Math.PI/180 * angle);
+
+		context.save();
+		context.translate(x, y);
+		context.rotate(Math.PI/180 * angle);
+		context.drawImage(car, -(car.width/2), -(car.height/2));	
+		context.restore();
+	}
+	</pre>
+	<p>
+		We now have a car which can move and rotate over a period of time. Next we will tie these movements to our keyboard so that we may control our car! 
+	</p>
+	<p>
+		In making our car move, we need to identify what exactly we will be changing with each keystroke. For our controls we will make use of the WSAD keys. The numerical values for them, also known as key codes, are as such.
+	</p>
+	<dl>
+		<dt>W:</dt>
+				<dd>87</dd>
+		<dt>S:</dt>
+				<dd>83</dd>
+		<dt>A:</dt>
+				<dd>65</dd>
+		<dt>D:</dt>
+				<dd>68</dd>
+	</dl>
+	<pre class="brush: js; first-line: 1;">
+	window.onload = function()
+	{
+		x = 0;
+		y = 0;
+		speed = 5;
+		angle = 0;
+		mod = 0;
+		
+		canvas = document.getElementById("canvas");
+		context = canvas.getContext("2d");
+		car = new Image();
+	    	car.src="myimage.png";
+
+	    	window.addEventListener("keydown", keypress_handler, false);
+	    	window.addEventListener("keyup", keyup_handler, false);
+
+		var move = setInterval(function()
+		{
+			draw();
+		}, 30);
+	};
+
+	function draw()
+	{
+		context = canvas.getContext("2d");
+		context.clearRect(0, 0, 800, 800);
+
+		context.fillStyle = "rgb(200, 100, 220)";
+		context.fillRect(50, 50, 100, 100);
+
+		x += (speed*mod) * Math.cos(Math.PI/180 * angle);
+		y += (speed*mod) * Math.sin(Math.PI/180 * angle);
+
+		context.save();
+		context.translate(x, y);
+		context.rotate(Math.PI/180 * angle);
+		context.drawImage(car, -(car.width/2), -(car.height/2));	
+		context.restore();
+	}
+
+	function keyup_handler(event)
+	{
+		if(event.keyCode == 87 || event.keyCode == 83)
+		{
+			mod = 0;
+		}
+	}
+
+	function keypress_handler(event)
+	{
+		console.log(event.keyCode);
+		if(event.keyCode == 87)
+		{
+			mod = 1;
+		}
+		if(event.keyCode == 83)
+		{
+			mod = -1;
+		}
+		if(event.keyCode == 65)
+		{
+			angle -= 5;
+		}
+		if(event.keyCode == 68)
+		{
+			angle+=5;
+		}
+	}
+	</pre>
+	<h3>Conclusion</h3>
+	<p>
+	Well there you have it. We now have a working controllable car built in HTML5.
+	</p>
+	<p>
+		For further reading, I would suggest to researching JavaScript design patterns and object oriented programming. This will allow you to support several cars at once and manage more complex code that comes in writing a larger HTML5 applications.
+	</p>
+	<h3>Further Reading</h3>
+	<h4>HTML5 Resources</h4>
+	<ul>
+		<li><a href="https://developer.mozilla.org/en-US/docs/HTML/Canvas">https://developer.mozilla.org/en-US/docs/HTML/Canvas</a></li>
+		<li><a href="http://www.w3schools.com/html/html5_canvas.asp">http://www.w3schools.com/html/html5_canvas.asp</a></li>
+	</ul>
+	<h4>JavaScript Design Patterns</h4>
+	<ul>
+		<li><a href="http://addyosmani.com/resources/essentialjsdesignpatterns/book/">http://addyosmani.com/resources/essentialjsdesignpatterns/book/</a></li>
+	</ul>
+	<h4>Object Oriented JavaScript</h4>
+	<ul>
+		<li><a href="https://developer.mozilla.org/en-US/docs/JavaScript/Introduction_to_Object-Oriented_JavaScript">https://developer.mozilla.org/en-US/docs/JavaScript/Introduction_to_Object-Oriented_JavaScript</a></li>
+	</ul>
+</div>
+<div id="footer">
+	<p>
+		Techrangers Robot" and Content  Copyright &copy; 2013, <a href="http://techrangers.cdl.ucf.edu">Techrangers</a> <sup>&reg;</sup> <a href="http://cdl.ucf.edu/">Center for Distributed Learning</a>
+	</p>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
