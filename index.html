@@ -83,7 +83,7 @@
 	</p>
 	<ol> 
 		<li>Set window.onload to your draw function.</li>
-		<li>You grab the canvas tag out of the DOM.</li>
+		<li>Create a reference to the canvas tag using the DOM.</li>
 		<li>Get the 2D context of the canvas tag so we may build shapes and graphics.</li>
 		<li>We set the fillStyle property of the context to a certain color. This allows any shapes we create to use this property in their creation.</li>
 		<li>We then use the method fillRect() of the canvas tag to build a rectangle with x and y coordinates. This translates into fillRect(x1, y1, x2, y2). Since we already set the context fillStyle to a color, the rectangle uses that to fill in itself.</li>
