@@ -150,7 +150,7 @@
 		canvas = document.getElementById("canvas");
 		context = canvas.getContext("2d");
 
-		var move = setInterval(function()
+		var moveInterval = setInterval(function()
 		{
 			draw();
 		}, 30);
@@ -167,10 +167,10 @@
 	}
 	</pre>
 	<p>
-		The reason we set setInterval to a variable is so we may stop the animation from occurring. We simply do the following if we want things to stop.
+		We can stop the animation by passing the interval id returned by SetInterval into the clearInterval function.
 	</p>
 	<pre class="brush: js; first-line: 1;">
-	clearInterval(move);
+	clearInterval(moveInterval);
 	</pre>
 	<h3>RequestAnimationFrame</h4>
 	<p>
@@ -199,7 +199,7 @@
 		car = new Image();
 		car.src="myimage.png";
 
-		var move = setInterval(function()
+		var moveInterval = setInterval(function()
 		{
 			draw();
 		}, 30);
@@ -239,7 +239,7 @@
 		car = new Image();
 	    	car.src="myimage.png";
 
-		var move = setInterval(function()
+		var moveInterval = setInterval(function()
 		{
 			draw();
 		}, 30);
@@ -293,7 +293,7 @@
 	    	window.addEventListener("keydown", keypress_handler, false);
 	    	window.addEventListener("keyup", keyup_handler, false);
 
-		var move = setInterval(function()
+		var moveInterval = setInterval(function()
 		{
 			draw();
 		}, 30);
