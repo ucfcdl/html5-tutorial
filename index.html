@@ -37,6 +37,8 @@
 		<li><a href="img/tutrobot.png" target="_blank">Image for use in project</a></li>
 		<li><a href="https://github.com/ucfcdl/html5-tutorial">Github Repo</a></li>
 	</ul>
+	<h3>Project Demo</h3>
+	<iframe style="width: 100%; height: 1000px;" src="http://jsfiddle.net/havok2905/tJnCh/18/embedded/result,js,html,css" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 	<h2>Introduction to the Canvas</h2>
 	<p>
 		The release of HTML5 brought a myriad of changes to the web development community, but the canvas element, combined with some clever JavaScript, is what allows us to create complex and dynamic graphical content for the web. We will be focusing on it specifically to build a basic control system for a car in a top down browser based game.
@@ -83,7 +85,7 @@
 	</p>
 	<ol> 
 		<li>Set window.onload to your draw function.</li>
-		<li>You grab the canvas tag out of the DOM.</li>
+		<li>Create a reference to the canvas tag using the DOM.</li>
 		<li>Get the 2D context of the canvas tag so we may build shapes and graphics.</li>
 		<li>We set the fillStyle property of the context to a certain color. This allows any shapes we create to use this property in their creation.</li>
 		<li>We then use the method fillRect() of the canvas tag to build a rectangle with x and y coordinates. This translates into fillRect(x1, y1, x2, y2). Since we already set the context fillStyle to a color, the rectangle uses that to fill in itself.</li>
@@ -98,7 +100,10 @@
 		<li>Pass the image object into the context with x and y coordinates</li>
 	</ol>
 	<p>
-		When the car is drawn it will be drawn at the top most left corner of the image file. This is just how drawImage() handles the image creation process. 
+		When the car is drawn using the drawImage() method, it will be drawn at coordinate 0,0 by the top left corner of the image.
+	</p>
+	<p>
+		<img src="img/grid.png" alt="graphic showing example of the grid"/>
 	</p>
 	<p>
 		So your code should now look like this. You can <a href="img/tutrobot.png" target="_blank">grab a copy of the car image here</a>.
@@ -136,10 +141,7 @@
 		This will clear anything drawn in that particular section of the canvas. We will use this to simulate starting on a new blank page.
 	</p>
 	<p>
-		For step three, we need to indefinitely loop through our statements while making changes with each iteration. However, like a flipbook, we need to add a factor of time to the equation. If we just loop through, the canvas will only display our final result, but we want each change to display incrementally with a small delay. Think about when you flip through a flipbook. Each new page is revealed a fraction of a second apart from each other. We can simulate this in JavaScript with this the setInterval method. Your code should now look like this.
-	</p>
-	<p>
-		We are taking this moment to split up the drawing.
+		For step three, we need to indefinitely loop through our statements while making changes with each iteration. However, like a flipbook, we need to add a factor of time to the equation. If we just loop through, the canvas will only display our final result, but we want each change to display incrementally with a small delay. Think about when you flip through a flipbook. Each new page is revealed a fraction of a second apart from each other. We can simulate this in JavaScript with the setInterval method. Your code should now look like this (We are taking this moment to split up the drawing).
 	</p>
 	<pre class="brush: js; first-line: 1;">
 	window.onload = function()
@@ -150,7 +152,7 @@
 		canvas = document.getElementById("canvas");
 		context = canvas.getContext("2d");
 
-		var move = setInterval(function()
+		var moveInterval = setInterval(function()
 		{
 			draw();
 		}, 30);
@@ -167,11 +169,16 @@
 	}
 	</pre>
 	<p>
-		The reason we set setInterval to a variable is so we may stop the animation from occurring. We simply do the following if we want things to stop.
+		We can stop the animation by passing the interval id returned by setInterval into the clearInterval function.
 	</p>
 	<pre class="brush: js; first-line: 1;">
-	clearInterval(move);
+	clearInterval(moveInterval);
 	</pre>
+	<h3>RequestAnimationFrame</h4>
+	<p>
+		Apart from the use of setInterval, HTML5 also provides a JavaScript API called requestAnimationFrame for working with animations with the canvas tag. It has the benefit of optimizing some of the animation features of the canvas tag and can stop animations from running in tabs that are not visible. We will not be using it for this tutorial as it's not cross browser compatible and requires knowledge of callback functions and recursion.
+		However, if you are interested in learning more about it, you can go to this <a href="http://paulirish.com/2011/requestanimationframe-for-smart-animating/">page on requestAnimationFrame</a> to learn more about the requestAnimationFrame API. 
+	</p>
 	<h3>Controlling the Movement</h3>
 	<h4>SOH CAH TOA</h4>
 	<p>
@@ -194,7 +201,7 @@
 		car = new Image();
 		car.src="myimage.png";
 
-		var move = setInterval(function()
+		var moveInterval = setInterval(function()
 		{
 			draw();
 		}, 30);
@@ -211,7 +218,7 @@
 	}
 	</pre>
 	<p>
-		Now we need to make our car rotate. luckily for us, HTML5 includes a rotate method! 
+		Now we need to make our car rotate. Lucky for us, the Canvas API includes a rotate method! 
 		The rotate method, like our drawImage method, does not rotate the object around its center, but at the left corner of the object. This means we need to make a very small adjustment to our movement statements as well as implementing the rotate method. 
 	</p>
 	<ol>
@@ -234,7 +241,7 @@
 		car = new Image();
 	    	car.src="myimage.png";
 
-		var move = setInterval(function()
+		var moveInterval = setInterval(function()
 		{
 			draw();
 		}, 30);
@@ -288,7 +295,7 @@
 	    	window.addEventListener("keydown", keypress_handler, false);
 	    	window.addEventListener("keyup", keyup_handler, false);
 
-		var move = setInterval(function()
+		var moveInterval = setInterval(function()
 		{
 			draw();
 		}, 30);
@@ -337,7 +344,7 @@
 		}
 		if(event.keyCode == 68)
 		{
-			angle+=5;
+			angle += 5;
 		}
 	}
 	</pre>
@@ -346,13 +353,14 @@
 	Well there you have it. We now have a working controllable car built in HTML5.
 	</p>
 	<p>
-		For further reading, I would suggest to researching JavaScript design patterns and object oriented programming. This will allow you to support several cars at once and manage more complex code that comes in writing a larger HTML5 applications.
+		For further reading, I would suggest to researching JavaScript design patterns and object oriented programming. This will allow you to support several cars at once and manage more complex code that comes in writing larger HTML5 applications.
 	</p>
 	<h3>Further Reading</h3>
 	<h4>HTML5 Resources</h4>
 	<ul>
 		<li><a href="https://developer.mozilla.org/en-US/docs/HTML/Canvas">https://developer.mozilla.org/en-US/docs/HTML/Canvas</a></li>
 		<li><a href="http://www.w3schools.com/html/html5_canvas.asp">http://www.w3schools.com/html/html5_canvas.asp</a></li>
+		<li><a href="http://paulirish.com/2011/requestanimationframe-for-smart-animating/">http://paulirish.com/2011/requestanimationframe-for-smart-animating/</a></li>
 	</ul>
 	<h4>JavaScript Design Patterns</h4>
 	<ul>
